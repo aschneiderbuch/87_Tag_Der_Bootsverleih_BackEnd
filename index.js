@@ -12,7 +12,8 @@ import { postReservierung, getAlleReservierungen,
   getReservierungById, deleteReservierungById,
   getAktuelleReservierungZeitraum, getAlleReservierungenObj,updateReservierung } from './controller/reservierung.js'
 
-import { postBoot, getAlleBoote, getBooteById, deleteBooteById, getAlleBooteObj, getBooteBildById } from './controller/boote.js'
+import { postBoot, getAlleBoote, getBooteById, 
+  deleteBooteById, getAlleBooteObj, getBooteBildById, getBooteMitBildern } from './controller/boote.js'
 
 const app = express()
 const BACKEND_PORT = process.env.BACKEND_PORT 
@@ -61,7 +62,7 @@ app.put('/api/v1/updateReservierung', upload.any(), updateReservierung)  //264 e
 // verfuegbareBoote     
  // ! Vorsicht hier muss er noch die Reservierungen aus der DB holen und dann die Boote aus der DB holen
  // ! prüft ob es bei den Reservierungen schon eine welches_boot gibt, wenn ja, dann nicht mitzählen ? 
-// app.get('/api/v1/verfuegbareBoote', getVerfuegbareBoote)    //296   = Zahl    
+ // app.get('/api/v1/verfuegbareBoote', getVerfuegbareBoote)    //296   = Zahl    
 // + Objekt
 // app.get('/api/v1/verfuegbareBooteObj', getVerfuegbareBooteObj) //266 = Objekt
 
@@ -91,6 +92,9 @@ bootsart : "Segelboot",
 bild: 'uploadBild/fb9c6b817fb2a4d73ff2ada9ef411599'
  */
 app.get('/api/v1/boote/:id/bild', getBooteBildById)             // 240
+
+//  alleBoote mit Bildern      
+app.get('/api/v1/booteBilder', getBooteMitBildern)    //  246  = zahl
 
 // Server    
  // npm run dev   =>  nodemon index.js     

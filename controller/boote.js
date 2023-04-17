@@ -113,3 +113,18 @@ export const deleteBooteById = async (req, res) => {
         res.status(599).json( { message: `Fehler bei deleteBooteById: ${err}`})
     }
 }
+
+
+// getBooteMitBildern     findet Zahl
+export const getBooteMitBildern = async (req, res) => {
+    try {
+        const db = await getDb()
+        const boot = await db.collection(COL).find( { bild: {$exists: true }}).count()
+        console.log(boot)
+        res.status(246).json( { boot }  )
+            } catch (err) {
+                console.log(err)
+                res.status(546).json( { message: `Fehler bei getVerfuegbareBoote: ${err} `})
+            }
+}
+
