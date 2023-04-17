@@ -22,7 +22,7 @@ app.use(morgan('dev'))
 
 // CORS
 const CORS_WHITELIST = process.env.CORS_WHITELIST
-// app.use(cors( { origin: CORS_WHITELIST }))
+app.use(cors( { origin: CORS_WHITELIST }))
 
 
 
@@ -60,7 +60,11 @@ app.put('/api/v1/updateReservierung', upload.any(), updateReservierung)  //264 e
 
 // verfuegbareBoote     
  // ! Vorsicht hier muss er noch die Reservierungen aus der DB holen und dann die Boote aus der DB holen
+ // ! prüft ob es bei den Reservierungen schon eine welches_boot gibt, wenn ja, dann nicht mitzählen ? 
 // app.get('/api/v1/verfuegbareBoote', getVerfuegbareBoote)    //296   = Zahl    
+// + Objekt
+// app.get('/api/v1/verfuegbareBooteObj', getVerfuegbareBooteObj) //266 = Objekt
+
 
 //alleBoote
  app.get('/api/v1/alleBoote', getAlleBoote)                   //297 = Zahl
@@ -74,7 +78,18 @@ app.delete('/api/v1/boote/:id', deleteBooteById)                 //299 id von BO
 app.post('/api/v1/boote',uploadBild.single('bild'), postBoot)               //290 ein neues Boot hinzufügen
 
 // ! Bild fetch zum anzeigen     im FrontEnd einbauen mit     <img src='..../api/v1/boote/..._idVomBoot_perMongoDB.../bild' alt='BootBild' />
-// id muss die _id vom Boot sein        <img src="http://localhost:9999/api/v1/boote/643d7e0390c84ce2bb3aeeef/bild" alt='BootBild' />
+// id muss die _id vom Boot sein     
+//  so in React rein  
+//  <img src="http://localhost:9999/api/v1/boote/643d7e0390c84ce2bb3aeeef/bild" alt='BootBild' />
+/*    
+MongoDB
+_id: new ObjectId("643d7e0390c84ce2bb3aeeef"),
+baujahr : "1994",
+seriennummer : "123454",
+material : "Pappe",
+bootsart : "Segelboot",
+bild: 'uploadBild/fb9c6b817fb2a4d73ff2ada9ef411599'
+ */
 app.get('/api/v1/boote/:id/bild', getBooteBildById)             // 240
 
 // Server    
