@@ -51,3 +51,25 @@ export const getReservierungById = async (req, res) => {
         res.status(592).json( { message: `Fehler bei getReservierungById: ${err}`})
     }
 }
+
+
+
+// reservierung     anhand der ID löschen      deleteReservierungById
+export const deleteReservierungById = async (req, res) => {
+    try {
+        const { id } = req.params   // ! id von BODY mit req.params holen
+        const db = await getDb()
+        const reservierung = await db.collection(COL).deleteOne( { _id: new ObjectId(id) })
+        console.log(reservierung)
+        if(reservierung.deletedCount === 1){
+            res.status(293).json( { message: `Reservierung mit der ID ${id} wurde gelöscht`})
+        }else{
+            res.status(583).json( { message: `Reservierung mit der ID ${id} wurde nicht gefunden`})
+        }
+    } catch (err) {
+        console.log(err)
+        res.status(593).json( { message: `Fehler bei deleteReservierungById: ${err}`})
+    }
+}
+
+

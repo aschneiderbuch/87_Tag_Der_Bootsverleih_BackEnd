@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid'
 //import { getDb } from './util/db.js'
 
 //fetches
-import { postReservierung, getAlleReservierungen, getReservierungById } from './controller/reservierung.js'
+import { postReservierung, getAlleReservierungen, getReservierungById, deleteReservierungById } from './controller/reservierung.js'
 
 
 const app = express()
@@ -37,7 +37,7 @@ app.get('/api/v1/alleReservierungen' , getAlleReservierungen)    //291   = Zahl
 
 // reservierung
  app.get('/api/v1/reservierung/:id', getReservierungById)       //2 id von BODY mit req.params holen
-// app.delete('/api/v1/reservierung/:id', deleteReservierung)       //3 id von BODY mit req.params holen
+ app.delete('/api/v1/reservierung/:id', deleteReservierungById)       //3 id von BODY mit req.params holen
 
  app.post('/api/v1/reservierung',upload.any(), postReservierung)           //4 eine neue Reservierung hinzufügen
 
