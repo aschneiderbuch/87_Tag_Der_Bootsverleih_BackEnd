@@ -57,7 +57,16 @@ export const getBooteById = async (req, res) => {
 export const deleteBooteById = async (req, res) => {
     try {
         const { id } = req.params // ! id von BODY mit req.params holen
+        const db = await getDb()
+        const boot = await db.collection(COL).deleteOne( { _id: new ObjectId(id)})
+        console.log(boot)
+        if (boot.deletedCount === 1) {
+            res.status(299).json( { message: `Boot ID ${id} wurde gelöscht`})
+        }else {
+            res.status(589).json( { message: `Boot ID ${id} nicht gefunden`})
+        }
     } catch (err) {
-        
+        console.log(err)
+        res.status(599).json( { message: `Fehler bei deleteBooteById: ${err}`})
     }
 }
