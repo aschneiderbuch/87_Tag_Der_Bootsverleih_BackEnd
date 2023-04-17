@@ -5,10 +5,10 @@ import cors from 'cors'
 import multer from 'multer'
 import { v4 as uuidv4 } from 'uuid'
 
-import { getDb } from './util/db.js'
+//import { getDb } from './util/db.js'
 
 //fetches
-import { postReservierung } from './controller/reservierung.js'
+import { postReservierung, getAlleReservierungen } from './controller/reservierung.js'
 
 
 const app = express()
@@ -27,35 +27,35 @@ app.use(cors( { origin: CORS_WHITELIST }))
 app.use(express.json())
 
 // Middleware multer   inputFelder  // content-type: multipart/form-data
-const upload = multer()
+ const upload = multer()
 
 
 
 // fetches
-// alleReservierunge 
-// app.get('api/v1/alleReservierungen' , getAlleReservierungen)    // = Zahl
+// alleReservierungen 
+app.get('/api/v1/alleReservierungen' , getAlleReservierungen)    //201   = Zahl
 
 // reservierung
-// app.get('api/v1/reservierung/:id', getReservierung)       // id von BODY mit req.params holen
-// app.delete('api/v1/reservierung/:id', deleteReservierung)       // id von BODY mit req.params holen
+// app.get('/api/v1/reservierung/:id', getReservierung)       //2 id von BODY mit req.params holen
+// app.delete('/api/v1/reservierung/:id', deleteReservierung)       //3 id von BODY mit req.params holen
 
- app.post('api/v1/reservierung', postReservierung)           // eine neue Reservierung hinzufügen
+ app.post('/api/v1/reservierung',upload.any(), postReservierung)           //4 eine neue Reservierung hinzufügen
 
 // aktuelleReservierung
-// app.get('api/v1/aktuelleReservierung', getAktuelleReservierung)   // = Zahl   + DB filter Datum > als Heute
+// app.get('/api/v1/aktuelleReservierung', getAktuelleReservierung)   //5 = Zahl   + DB filter Datum > als Heute
 
 
 // verfuegbareBoote      
-// app.get('api/v1/verfuegbareBoote', getVerfuegbareBoote)    //   = Zahl    
+// app.get('/api/v1/verfuegbareBoote', getVerfuegbareBoote)    //6   = Zahl    
 
 //alleBoote
-// app.get('api/v1/alleBoote', getAlleBoote)                   // = Zahl
+// app.get('/api/v1/alleBoote', getAlleBoote)                   //7 = Zahl
 
 // boote
-// app.get('api/v1/boote/:id', getBoote)                       // id von BODY mit req.params holen
-// app.delete('api/v1/boote/:id', deleteBoote)                 // id von BODY mit req.params holen
+// app.get('/api/v1/boote/:id', getBoote)                       //8 id von BODY mit req.params holen
+// app.delete('/api/v1/boote/:id', deleteBoote)                 //9 id von BODY mit req.params holen
 
-// app.post('api/v1/boote', postBoote)                          // ein neues Boot hinzufügen
+// app.post('/api/v1/boote',upload.any() postBoote)                          //0 ein neues Boot hinzufügen
 
 
 // Server    
