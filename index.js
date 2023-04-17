@@ -13,7 +13,7 @@ import { postReservierung, getAlleReservierungen,
   getAktuelleReservierungZeitraum, getAlleReservierungenObj,updateReservierung } from './controller/reservierung.js'
 
 import { postBoot, getAlleBoote, getBooteById, 
-  deleteBooteById, getAlleBooteObj, getBooteBildById, getBooteMitBildern } from './controller/boote.js'
+  deleteBooteById, getAlleBooteObj, getBooteBildById, getBooteMitBildern, getVerfuegbareBoote } from './controller/boote.js'
 
 const app = express()
 const BACKEND_PORT = process.env.BACKEND_PORT 
@@ -62,7 +62,7 @@ app.put('/api/v1/updateReservierung', upload.any(), updateReservierung)  //264 e
 // verfuegbareBoote     
  // ! Vorsicht hier muss er noch die Reservierungen aus der DB holen und dann die Boote aus der DB holen
  // ! prüft ob es bei den Reservierungen schon eine welches_boot gibt, wenn ja, dann nicht mitzählen ? 
- // app.get('/api/v1/verfuegbareBoote', getVerfuegbareBoote)    //296   = Zahl    
+ app.get('/api/v1/verfuegbareBoote', getVerfuegbareBoote)    //296   = Zahl    
 // + Objekt
 // app.get('/api/v1/verfuegbareBooteObj', getVerfuegbareBooteObj) //266 = Objekt
 
