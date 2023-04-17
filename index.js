@@ -7,6 +7,9 @@ import { v4 as uuidv4 } from 'uuid'
 
 import { getDb } from './util/db.js'
 
+//fetches
+import { postReservierung } from './controller/reservierung.js'
+
 
 const app = express()
 const BACKEND_PORT = process.env.BACKEND_PORT 
@@ -29,15 +32,30 @@ const upload = multer()
 
 
 // fetches
-// AlleReservierunge 
-app.get('api/v1/alleReservierungen' , alleReservierungen)    // = Zahl
+// alleReservierunge 
+// app.get('api/v1/alleReservierungen' , getAlleReservierungen)    // = Zahl
 
-// reseervierung
-app.get('api/v1/reservierung/:id', getReservierung)       // id von BODY mit req.params holen
-app.delete('api/v1/reservierung/:id', deleteReservierung)       // id von BODY mit req.params holen
-app.post('api/v1/reservierung', postReservierung)
+// reservierung
+// app.get('api/v1/reservierung/:id', getReservierung)       // id von BODY mit req.params holen
+// app.delete('api/v1/reservierung/:id', deleteReservierung)       // id von BODY mit req.params holen
+
+ app.post('api/v1/reservierung', postReservierung)           // eine neue Reservierung hinzufügen
+
+// aktuelleReservierung
+// app.get('api/v1/aktuelleReservierung', getAktuelleReservierung)   // = Zahl   + DB filter Datum > als Heute
 
 
+// verfuegbareBoote      
+// app.get('api/v1/verfuegbareBoote', getVerfuegbareBoote)    //   = Zahl    
+
+//alleBoote
+// app.get('api/v1/alleBoote', getAlleBoote)                   // = Zahl
+
+// boote
+// app.get('api/v1/boote/:id', getBoote)                       // id von BODY mit req.params holen
+// app.delete('api/v1/boote/:id', deleteBoote)                 // id von BODY mit req.params holen
+
+// app.post('api/v1/boote', postBoote)                          // ein neues Boot hinzufügen
 
 
 // Server    
