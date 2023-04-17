@@ -12,7 +12,7 @@ import { postReservierung, getAlleReservierungen,
   getReservierungById, deleteReservierungById,
   getAktuelleReservierungZeitraum, getAlleReservierungenObj,updateReservierung } from './controller/reservierung.js'
 
-import { postBoot, getAlleBoote, getBooteById, deleteBooteById, getAlleBooteObj } from './controller/boote.js'
+import { postBoot, getAlleBoote, getBooteById, deleteBooteById, getAlleBooteObj, getBooteBildById } from './controller/boote.js'
 
 const app = express()
 const BACKEND_PORT = process.env.BACKEND_PORT 
@@ -22,7 +22,7 @@ app.use(morgan('dev'))
 
 // CORS
 const CORS_WHITELIST = process.env.CORS_WHITELIST
-app.use(cors( { origin: CORS_WHITELIST }))
+// app.use(cors( { origin: CORS_WHITELIST }))
 
 
 
@@ -31,10 +31,15 @@ app.use(express.json())
 
 // Middleware multer   inputFelder  // content-type: multipart/form-data
  const upload = multer()
+ // ! Bilder speichern auf dem Server     in die MongoDB geht nur der Pfad zum Speicherplatz auf dem Server
+ // ! Damit die MongoDB nicht aufgebläht wird, die Bilder nicht doppelt gespeichert werden und die DB weiter gut scalierbar bleibt 
+ const uploadBild = multer( { dest: 'uploadBild/'} )
+ app.use('/uploadBild', express.static('./uploadBild'))
 
 
 
 // fetches
+
 // alleReservierungen        
 app.get('/api/v1/alleReservierungen' , getAlleReservierungen)    //291   = findet Zahl
 // + Objekt
@@ -54,7 +59,7 @@ app.put('/api/v1/updateReservierung', upload.any(), updateReservierung)  //264 e
 
 
 // verfuegbareBoote     
- // ! Vorsicht hir muss er noch die Reservierungen aus der DB holen und dann die Boote aus der DB holen
+ // ! Vorsicht hier muss er noch die Reservierungen aus der DB holen und dann die Boote aus der DB holen
 // app.get('/api/v1/verfuegbareBoote', getVerfuegbareBoote)    //296   = Zahl    
 
 //alleBoote
@@ -65,8 +70,12 @@ app.put('/api/v1/updateReservierung', upload.any(), updateReservierung)  //264 e
 app.get('/api/v1/boote/:id', getBooteById)                       //298 id von BODY mit req.params holen
 app.delete('/api/v1/boote/:id', deleteBooteById)                 //299 id von BODY mit req.params holen
 
-app.post('/api/v1/boote',upload.any(), postBoot)               //290 ein neues Boot hinzufügen
+// ! wenn nicht upload.any() dann wegen Bild upload.single('bild')   req.body.bild muss vom FrontEnd kommen
+app.post('/api/v1/boote',uploadBild.single('bild'), postBoot)               //290 ein neues Boot hinzufügen
 
+// ! Bild fetch zum anzeigen     im FrontEnd einbauen mit     <img src='..../api/v1/boote/..._idVomBoot_perMongoDB.../bild' alt='BootBild' />
+// id muss die _id vom Boot sein        <img src="http://localhost:9999/api/v1/boote/643d7e0390c84ce2bb3aeeef/bild" alt='BootBild' />
+app.get('/api/v1/boote/:id/bild', getBooteBildById)             // 240
 
 // Server    
  // npm run dev   =>  nodemon index.js     
