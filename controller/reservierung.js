@@ -6,6 +6,7 @@ const COL = 'reservierung'
 export const postReservierung = async (req, res) => {
     try{
         console.log(req.body)
+        // ! schickt ID vom Boot mit
         const db = await getDb()
         const reservierung = await db.collection(COL).insertOne(req.body)
         console.log(reservierung)
@@ -15,6 +16,16 @@ export const postReservierung = async (req, res) => {
         res.status(594).json( { message: `Fehler bei postReservierung: ${err}` } )
     
 }}
+
+export const updateReservierung = async (req, res) => {
+    console.log(req.body)
+    // ! schickt ID vom Boot mit     als    req.body.id
+    try {
+        const db = await getDb()
+        // const reservierung = await db.collection(COL).updateOne( { _id: new ObjectId(req.body.id) } )
+        const reservierung = await db.collection(COL).updateOne( { _id: new ObjectId(req.body.id) }, { $set: { startdatum: req.body.startdatum, enddatum: req.body.enddatum } } )
+    }
+}
 
 
 

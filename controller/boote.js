@@ -33,6 +33,20 @@ export const getAlleBoote = async (req, res) => {
 }
 
 
+// getAlleBooteObj      findet Objekt
+export const getAlleBooteObj = async (req, res) => {
+    try {
+        const db = await getDb()
+        const boot = await db.collection(COL).find().toArray()
+        console.log(boot)
+        res.status(267).json( { boot } )
+    } catch (err) {
+        console.log(err) 
+        res.status(557).json( { message: `Fehler bei getAlleBooteObj: ${err}`})
+    }
+}
+
+
 // boot     anhand der ID finden      getBootById
 export const getBooteById = async (req, res) => {
     try{
