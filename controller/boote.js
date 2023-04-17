@@ -166,19 +166,21 @@ export const getVerfuegbareBoote = async (req, res) => {
         const db = await getDb();
 
         const alleBoote = await db.collection(BOOTE_COLLECTION).find().toArray();
+        console.log({ message_alleBo: alleBoote})
         const reservierteBoote = await db.collection(RESERVIERUNG_COLLECTION)
-            .find({ startdatum: { $lte: enddatum }, enddatum: { $gte: startdatum } })
+            .find({ startdatum: { $ne: enddatum }, enddatum: { $ne: startdatum } })
             .toArray();
+        console.log({ message_resBo: reservierteBoote})
 
         const verfuegbareBoote = alleBoote.filter(boot =>
             !reservierteBoote.some(reservierung => reservierung.bootId === boot._id)
         );
         // anzahl der verfügbaren Boote
-        // const anzahlVerfuegbareBoote = verfuegbareBoote.length;
-        // console.log(anzahlVerfuegbareBoote);
+        const anzahlVerfuegbareBoote = verfuegbareBoote.length;
+         console.log(anzahlVerfuegbareBoote);
 
 
-        res.status(200).json(verfuegbareBoote);
+        res.status(200).json(anzahlVerfuegbareBoote);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: `Fehler beim Abrufen verfügbarer Boote: ${error}` });
