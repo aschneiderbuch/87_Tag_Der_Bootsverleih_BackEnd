@@ -12,6 +12,7 @@ import { postReservierung, getAlleReservierungen,
   getReservierungById, deleteReservierungById,
   getAktuelleReservierungZeitraum } from './controller/reservierung.js'
 
+import { postBoot, getAlleBoote } from './controller/boote.js'
 
 const app = express()
 const BACKEND_PORT = process.env.BACKEND_PORT 
@@ -44,21 +45,22 @@ app.get('/api/v1/alleReservierungen' , getAlleReservierungen)    //291   = Zahl
  app.post('/api/v1/reservierung',upload.any(), postReservierung)           //4 eine neue Reservierung hinzufügen
 
 // aktuelleReservierung     // multer upload    damit er Datum vom FrontEnd für die Suche in der DB bekommt
-// zwei Werte vom FrontEnd kommen: startdatum und enddatum
- app.get('/api/v1/aktuelleReservierung', upload.any(), getAktuelleReservierungZeitraum)   //5 = Zahl   + DB filter Datum > als Heute
+// zwei Werte vom FrontEnd kommen: startdatum und enddatum   // Rückgabe alle Reservierungen(Objekte) im Zeitraum
+ app.get('/api/v1/aktuelleReservierung', upload.any(), getAktuelleReservierungZeitraum)   //5  = Objekt   + DB filter Datum > als Heute
 
 
-// verfuegbareBoote      
+// verfuegbareBoote     
+ // ! Vorsicht hir muss er noch die Reservierungen aus der DB holen und dann die Boote aus der DB holen
 // app.get('/api/v1/verfuegbareBoote', getVerfuegbareBoote)    //6   = Zahl    
 
 //alleBoote
-// app.get('/api/v1/alleBoote', getAlleBoote)                   //7 = Zahl
+ app.get('/api/v1/alleBoote', getAlleBoote)                   //7 = Zahl
 
 // boote
 // app.get('/api/v1/boote/:id', getBoote)                       //8 id von BODY mit req.params holen
 // app.delete('/api/v1/boote/:id', deleteBoote)                 //9 id von BODY mit req.params holen
 
-// app.post('/api/v1/boote',upload.any() postBoote)                          //0 ein neues Boot hinzufügen
+app.post('/api/v1/boote',upload.any(), postBoot)               //0 ein neues Boot hinzufügen
 
 
 // Server    

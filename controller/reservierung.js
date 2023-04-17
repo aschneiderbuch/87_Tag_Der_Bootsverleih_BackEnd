@@ -1,5 +1,5 @@
 import { getDb } from '../util/db.js'
-import { ObjectId } from "mongodb"
+import { ObjectId } from "mongodb"   // ! für die ID damit man vom FrontEnd req.params holen kann
 
 const COL = 'reservierung'
 
