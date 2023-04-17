@@ -8,7 +8,9 @@ import { v4 as uuidv4 } from 'uuid'
 //import { getDb } from './util/db.js'
 
 //fetches
-import { postReservierung, getAlleReservierungen, getReservierungById, deleteReservierungById } from './controller/reservierung.js'
+import { postReservierung, getAlleReservierungen, 
+  getReservierungById, deleteReservierungById,
+  getAktuelleReservierungZeitraum } from './controller/reservierung.js'
 
 
 const app = express()
@@ -41,8 +43,9 @@ app.get('/api/v1/alleReservierungen' , getAlleReservierungen)    //291   = Zahl
 
  app.post('/api/v1/reservierung',upload.any(), postReservierung)           //4 eine neue Reservierung hinzufügen
 
-// aktuelleReservierung
-// app.get('/api/v1/aktuelleReservierung', getAktuelleReservierung)   //5 = Zahl   + DB filter Datum > als Heute
+// aktuelleReservierung     // multer upload    damit er Datum vom FrontEnd für die Suche in der DB bekommt
+// zwei Werte vom FrontEnd kommen: startdatum und enddatum
+ app.get('/api/v1/aktuelleReservierung', upload.any(), getAktuelleReservierungZeitraum)   //5 = Zahl   + DB filter Datum > als Heute
 
 
 // verfuegbareBoote      

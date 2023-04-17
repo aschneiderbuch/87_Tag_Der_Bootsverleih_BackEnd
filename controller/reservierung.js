@@ -73,3 +73,24 @@ export const deleteReservierungById = async (req, res) => {
 }
 
 
+
+// aktuelleReservierung      // vom FrontEnd kommt startdatum und enddatum
+// app.get('/api/v1/aktuelleReservierung', getAktuelleReservierungZeitraum)   //5 = Zahl   + DB filter Datum > als Heute
+export const getAktuelleReservierungZeitraum = async (req, res) => {
+    try {
+        const startdatum = req.body.startdatum
+        const enddatum = req.body.enddatum
+        const db = await getDb()
+        const reservierung = await db.collection(COL).find( { startdatum: { $gte: startdatum }, enddatum: { $lte: enddatum } }).toArray()
+        console.log(reservierung)
+        if (reservierung) {
+            res.status(295).json( { reservierung })
+        }else {
+            res.status(585).json( { message: `Reservierung mit dem Zeitraum ${startdatum} - ${enddatum} wurde nicht gefunden`})
+        }
+
+    } catch (err) {
+        console.log(err)
+        res.status(595).json( { message: `Fehler bei getAktuelleReservierungZeitraum: ${err} `})
+    }
+}
