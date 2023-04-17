@@ -1,4 +1,5 @@
 import { getDb } from '../util/db.js'
+import { ObjectId } from "mongodb"
 
 const COL = 'reservierung'
 
@@ -32,3 +33,21 @@ export const getAlleReservierungen = async (req, res ) => {
 }
 
 
+
+// reservierung     anhand der ID finden      getReservierungById
+export const getReservierungById = async (req, res) => {
+    try{
+        const { id } = req.params    // ! id von BODY mit req.params holen
+        const db = await getDb()
+        const reservierung = await db.collection(COL).findOne( { _id: new ObjectId(id) })
+        console.log(reservierung)
+        if (reservierung) {
+            res.status(292).json( { reservierung })
+        }else {
+            res.status(582).json( { message: 'Reservierungs ID nicht gefunden'})
+        }
+    } catch (err) {
+        console.log(err)
+        res.status(592).json( { message: `Fehler bei getReservierungById: ${err}`})
+    }
+}
