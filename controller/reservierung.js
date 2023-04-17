@@ -6,7 +6,7 @@ const COL = 'reservierung'
 export const postReservierung = async (req, res) => {
     try{
         console.log(req.body)
-        // ! schickt ID vom Boot mit
+        // ! schickt ID vom Boot mit req.body.welches_boot
         const db = await getDb()
         const reservierung = await db.collection(COL).insertOne(req.body)
         console.log(reservierung)
@@ -17,13 +17,25 @@ export const postReservierung = async (req, res) => {
     
 }}
 
+// updateReservierung so könnte man daten der Reservierung ändern
+// 
 export const updateReservierung = async (req, res) => {
     console.log(req.body)
-    // ! schickt ID vom Boot mit     als    req.body.id
+    
     try {
         const db = await getDb()
         // const reservierung = await db.collection(COL).updateOne( { _id: new ObjectId(req.body.id) } )
-        const reservierung = await db.collection(COL).updateOne( { _id: new ObjectId(req.body.id) }, { $set: { startdatum: req.body.startdatum, enddatum: req.body.enddatum } } )
+       //  const reservierung = await db.collection(COL).updateOne( { _id: new ObjectId(req.body.id) }, { $set: { startdatum: req.body.startdatum, enddatum: req.body.enddatum } } )
+       const reservierung = await db.collection(COL).updateOne( { _id: new ObjectId(req.body.id) }, { $set: { startdatum: req.body.startdatum, enddatum: req.body.enddatum, welches_boot: req.body.welches_boot}})
+       console.log(reservierung)
+       if (reservierung) {
+         res.status(264).json( {reservierung}) }
+         else {
+            res.status(564).json( { message: `Reservierung ID ${req.body.id} nicht gefunden`})
+         }
+    } catch (err) {
+        console.log(err)
+        res.status(554).json( { message: `Fehler bei updateReservierung: ${err} `})        
     }
 }
 

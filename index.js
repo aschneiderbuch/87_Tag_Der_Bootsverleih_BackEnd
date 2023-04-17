@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from 'uuid'
 //fetches
 import { postReservierung, getAlleReservierungen, 
   getReservierungById, deleteReservierungById,
-  getAktuelleReservierungZeitraum, getAlleReservierungenObj } from './controller/reservierung.js'
+  getAktuelleReservierungZeitraum, getAlleReservierungenObj,updateReservierung } from './controller/reservierung.js'
 
 import { postBoot, getAlleBoote, getBooteById, deleteBooteById, getAlleBooteObj } from './controller/boote.js'
 
@@ -46,7 +46,8 @@ app.get('/api/v1/alleReservierungenObj' , getAlleReservierungenObj)  //261 = fin
  app.delete('/api/v1/reservierung/:id', deleteReservierungById)       //293 id von BODY mit req.params holen
 
  app.post('/api/v1/reservierung',upload.any(), postReservierung)           //294 eine neue Reservierung hinzufügen
-
+app.put('/api/v1/updateReservierung', upload.any(), updateReservierung)  //264 eine neue Reservierung hinzufügen
+// oder mit /:id ? 
 // aktuelleReservierung     // multer upload    damit er Datum vom FrontEnd für die Suche in der DB bekommt
 // zwei Werte vom FrontEnd kommen: startdatum und enddatum   // Rückgabe alle Reservierungen(Objekte) im Zeitraum
  app.get('/api/v1/aktuelleReservierung', upload.any(), getAktuelleReservierungZeitraum)   //295  = Objekt   + DB filter Datum > als Heute
