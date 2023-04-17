@@ -32,6 +32,19 @@ export const getAlleReservierungen = async (req, res ) => {
     }
 }
 
+// alleReservierungen      findet Objekt
+export const getAlleReservierungenObj = async (req, res ) => {
+    try {
+        const db =await getDb()
+        const reservierung = await db.collection(COL).find().toArray()
+        console.log(reservierung)
+        res.status(261).json( { reservierung})
+    } catch (err) {
+        console.log(err)
+        res.status(561).json( { message: `Fehler bei getAlleReservierungenObj: ${err} `})
+    }
+}
+
 
 
 // reservierung     anhand der ID finden      getReservierungById
@@ -44,7 +57,7 @@ export const getReservierungById = async (req, res) => {
         if (reservierung) {
             res.status(292).json( { reservierung })
         }else {
-            res.status(582).json( { message: 'Reservierungs ID nicht gefunden'})
+            res.status(582).json( { message: `Reservierungs ID ${id} nicht gefunden`})
         }
     } catch (err) {
         console.log(err)
@@ -94,3 +107,6 @@ export const getAktuelleReservierungZeitraum = async (req, res) => {
         res.status(595).json( { message: `Fehler bei getAktuelleReservierungZeitraum: ${err} `})
     }
 }
+
+
+

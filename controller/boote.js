@@ -33,3 +33,31 @@ export const getAlleBoote = async (req, res) => {
 }
 
 
+// boot     anhand der ID finden      getBootById
+export const getBooteById = async (req, res) => {
+    try{
+        const { id } = req.params  // ! id von BODY mit req.params holen
+        const db = await getDb()
+        const boot = await db.collection(COL).findOne( { _id: new ObjectId(id)})
+        console.log(boot)
+        if (boot) {
+            res.status(298).json( { boot} )
+        } else {
+            res.status(588).json( { message: `Boot ID ${id} nicht gefunden`})
+        }
+    } catch (err) {
+        console.log(err)
+        res.status(598).json( { message: `Fehler bei getBooteById: ${err}`})
+    }
+}
+
+
+
+// deleteBooteById     anhand der ID löschen      
+export const deleteBooteById = async (req, res) => {
+    try {
+        const { id } = req.params // ! id von BODY mit req.params holen
+    } catch (err) {
+        
+    }
+}

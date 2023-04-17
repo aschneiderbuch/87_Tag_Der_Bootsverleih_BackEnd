@@ -10,9 +10,9 @@ import { v4 as uuidv4 } from 'uuid'
 //fetches
 import { postReservierung, getAlleReservierungen, 
   getReservierungById, deleteReservierungById,
-  getAktuelleReservierungZeitraum } from './controller/reservierung.js'
+  getAktuelleReservierungZeitraum, getAlleReservierungenObj } from './controller/reservierung.js'
 
-import { postBoot, getAlleBoote } from './controller/boote.js'
+import { postBoot, getAlleBoote, getBooteById, deleteBooteById } from './controller/boote.js'
 
 const app = express()
 const BACKEND_PORT = process.env.BACKEND_PORT 
@@ -37,9 +37,12 @@ app.use(express.json())
 // fetches
 // alleReservierungen 
 app.get('/api/v1/alleReservierungen' , getAlleReservierungen)    //291   = Zahl
+// + Objekt
+app.get('/api/v1/alleReservierungenObj' , getAlleReservierungenObj)  //261 = Objekt
+
 
 // reservierung
- app.get('/api/v1/reservierung/:id', getReservierungById)       //2 id von BODY mit req.params holen
+ app.get('/api/v1/reservierung/:id', getReservierungById)       //292 id von BODY mit req.params holen
  app.delete('/api/v1/reservierung/:id', deleteReservierungById)       //3 id von BODY mit req.params holen
 
  app.post('/api/v1/reservierung',upload.any(), postReservierung)           //4 eine neue Reservierung hinzufügen
@@ -57,8 +60,8 @@ app.get('/api/v1/alleReservierungen' , getAlleReservierungen)    //291   = Zahl
  app.get('/api/v1/alleBoote', getAlleBoote)                   //7 = Zahl
 
 // boote
-// app.get('/api/v1/boote/:id', getBoote)                       //8 id von BODY mit req.params holen
-// app.delete('/api/v1/boote/:id', deleteBoote)                 //9 id von BODY mit req.params holen
+app.get('/api/v1/boote/:id', getBooteById)                       //8 id von BODY mit req.params holen
+app.delete('/api/v1/boote/:id', deleteBooteById)                 //9 id von BODY mit req.params holen
 
 app.post('/api/v1/boote',upload.any(), postBoot)               //0 ein neues Boot hinzufügen
 
