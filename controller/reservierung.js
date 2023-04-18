@@ -8,7 +8,7 @@ export const postReservierung = async (req, res) => {
         console.log(req.body)
         // ! schickt ID vom Boot mit req.body.welches_boot
         const db = await getDb()
-        const reservierung = await db.collection(COL).insertOne(req.body)
+        const reservierung = await db.collection(COL_VALID).insertOne(req.body)
         console.log(reservierung)
         res.status(294).json({message: `Reservierung wurde hinzugefügt: ${reservierung}`})
     } catch (err) {
@@ -133,3 +133,42 @@ export const getAktuelleReservierungZeitraum = async (req, res) => {
 
 
 
+// createReservierungValid 
+// ! MongoDB Validierung nur 1x am Anfang ausführen    - da es createCollection() macht
+const COL_VALID = 'reservierungValid'
+export const createReservierungValid = async (req, res) => {
+    try{
+        const db = await getDb()
+        const reservierung = await db.createCollection(COL_VALID , {
+            validator: {
+                $jsonSchema: {
+                    bsonType: 'object',
+                    title: 'reservierungValid',
+
+                    required: ['startdatum', 'enddatum', 'welches_boot'],
+
+                    properties: {
+                        startdatum: {
+                            bsonType: 'date',
+                            description: 'startdatum muss ein Datum sein jjjj-mm-tt'
+                        },
+                        enddatum: {
+                            bsonType: 'date',
+                            description: 'enddatum muss ein Datum sein jjjj-mm-tt'
+                        },
+                        welches_boot: {
+                            bsonType: 'string',
+                            description: 'ist ein String mit der Boot _id (ObjectId)'
+                        }
+                    }
+                }
+            }
+        })
+        console.log(reservierung)
+        // ! wichtig .json() führt zu Fehler auch jeglicher Input außer String im .send() oder .end()
+        res.status(266).send('Reservierung Validierung wurde erstellt')
+    } catch (err){
+        console.log(err)
+        res.status(566).json( { message: `Fehler bei createReservierungValid: ${err} `})
+    }
+}

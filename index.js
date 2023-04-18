@@ -11,7 +11,7 @@ import { v4 as uuidv4 } from 'uuid'
 import {
   postReservierung, getAlleReservierungen,
   getReservierungById, deleteReservierungById,
-  getAktuelleReservierungZeitraum, getAlleReservierungenObj, updateReservierung
+  getAktuelleReservierungZeitraum, getAlleReservierungenObj, updateReservierung, createReservierungValid
 } from './controller/reservierung.js'
 
 import {
@@ -41,7 +41,7 @@ const upload = multer()
 const uploadBild = multer({
   dest: 'uploadBild/',
   limits: {
-    fieldSize: 1024 * 1024 * 1,    // schneidet Bilder ab bei mehr als Datei 1 MB
+    // fieldSize: 1024 * 1024 * 1,    // schneidet Bilder ab bei mehr als Datei 1 MB
     fileSize: 1024 * 1024 * 1,    //schneidet Bilder ab bei mehr als Datei 1 MB
   },
   fileFilter: (req, file, cb) => {
@@ -77,11 +77,14 @@ app.put('/api/v1/updateReservierung', upload.any(), updateReservierung)  //264 e
 // zwei Werte vom FrontEnd kommen: startdatum und enddatum   // Rückgabe alle Reservierungen(Objekte) im Zeitraum
 app.get('/api/v1/aktuelleReservierung', upload.any(), getAktuelleReservierungZeitraum)   //295  = Objekt   + DB filter Datum > als Heute
 
+// create Schema Validierung für Reservierung
+// ! MongoDB Validierung nur 1x am Anfang ausführen    - da es createCollection() macht
+app.post('/api/v1/createReservierungValid' , createReservierungValid)  // 262
 
 // verfuegbareBoote     
 // ! Vorsicht hier muss er noch die Reservierungen aus der DB holen und dann die Boote aus der DB holen
 // ! prüft ob es bei den Reservierungen schon eine welches_boot gibt, wenn ja, dann nicht mitzählen ? 
-app.get('/api/v1/verfuegbareBoote', getVerfuegbareBoote)    //296   = Zahl    
+app.put('/api/v1/verfuegbareBoote', getVerfuegbareBoote)    //296   = Zahl    
 // + Objekt
 // app.get('/api/v1/verfuegbareBooteObj', getVerfuegbareBooteObj) //266 = Objekt
 
