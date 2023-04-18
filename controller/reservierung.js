@@ -8,7 +8,7 @@ export const postReservierung = async (req, res) => {
         console.log(req.body)
         // ! schickt ID vom Boot mit req.body.welches_boot
         const db = await getDb()
-        const reservierung = await db.collection(COL_VALID).insertOne(req.body)
+        const reservierung = await db.collection(COL).insertOne(req.body)
         console.log(reservierung)
         res.status(294).json({message: `Reservierung wurde hinzugefügt: ${reservierung}`})
     } catch (err) {
@@ -135,11 +135,18 @@ export const getAktuelleReservierungZeitraum = async (req, res) => {
 
 // createReservierungValid 
 // ! MongoDB Validierung nur 1x am Anfang ausführen    - da es createCollection() macht
-const COL_VALID = 'reservierungValid'
+const COL_VALID = 'reservierungValid3'
 export const createReservierungValid = async (req, res) => {
     try{
         const db = await getDb()
-        const reservierung = await db.createCollection(COL_VALID , {
+        // ! Validierung rückgängig machen und auf 0 setzen
+       // await db.command({
+        //    collMod: COL_VALID,
+        //    validator: null 
+      //  });
+      // !!! oder per ssh mit admin rechten
+      // db.runCommand({ collMod: "reservierungValid", validator: { $jsonSchema: {}}})
+         const reservierung = await db.createCollection(COL_VALID , {
             validator: {
                 $jsonSchema: {
                     bsonType: 'object',
@@ -149,11 +156,11 @@ export const createReservierungValid = async (req, res) => {
 
                     properties: {
                         startdatum: {
-                            bsonType: 'date',
+                            bsonType: 'string',
                             description: 'startdatum muss ein Datum sein jjjj-mm-tt'
                         },
                         enddatum: {
-                            bsonType: 'date',
+                            bsonType: 'string',
                             description: 'enddatum muss ein Datum sein jjjj-mm-tt'
                         },
                         welches_boot: {
@@ -163,7 +170,7 @@ export const createReservierungValid = async (req, res) => {
                     }
                 }
             }
-        })
+        }) 
         console.log(reservierung)
         // ! wichtig .json() führt zu Fehler auch jeglicher Input außer String im .send() oder .end()
         res.status(266).send('Reservierung Validierung wurde erstellt')

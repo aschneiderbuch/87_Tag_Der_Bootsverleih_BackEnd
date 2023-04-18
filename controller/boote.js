@@ -130,6 +130,26 @@ export const getBooteMitBildern = async (req, res) => {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /** //* *********************************************************************************************
  * 
  * ! !!! ...Verfügbare boote geht alles nicht  !!! :-(     
@@ -145,7 +165,7 @@ export const getBooteMitBildern = async (req, res) => {
 // vergleicht vorhande Daten von startdatum und enddatum mit den Daten im Body ab
 // lässt keine überschneidungen bei den reservierung zu
 const COL_2 = 'reservierung'
-export const getVerfuegbareBoote2 = async (req, res) => {
+export const getVerfuegbareBoote = async (req, res) => {
     try {
         console.log(req.body)
         const startdatum = req.body.startdatum
@@ -220,111 +240,3 @@ if (range1Start < range2End && range2Start < range1End) {
   console.log("The date ranges do not overlap.");
 }
 */
-
-// Konvertieren eines Datumsstrings in einen absoluten Zahlenwert
-const toAbsoluteDate = (dateStr) => {
-    const date = new Date(dateStr);
-    return date.getTime();
-  };
-  
-  // Vergleichsfunktion für Datumsangaben
-  const dateCompare = (date1, date2) => {
-    const date1abs = toAbsoluteDate(date1);
-    const date2abs = toAbsoluteDate(date2);
-    if (date1abs > date2abs) {
-      return 1;
-    } else if (date1abs < date2abs) {
-      return -1;
-    } else {
-      return 0;
-    }
-  };
-  
-  export const getVerfuegbareBoote4 = async (req, res) => {
-      try {
-          const  startdatum = await req.body.startdatum
-          const  enddatum = await req.body.enddatum
-          
-          // Konvertieren der Datumsangaben in absolute Zahlenwerte
-          const startdatumAbsolutZahl = toAbsoluteDate(startdatum);
-          const enddatum2AbsoluteZahl = toAbsoluteDate(enddatum);
-          
-          console.log({ message_start: startdatumAbsolutZahl, message_end: enddatum2AbsoluteZahl })
-  
-          const db = await getDb();
-  
-          const alleBoote = await db.collection(BOOTE_COLLECTION).find().toArray();
-  
-          // Vergleich der Datumsangaben mithilfe der dateCompare()-Funktion
-          const reservierteBoote = await db.collection(RESERVIERUNG_COLLECTION)
-              .find({ 
-                  startdatum: { $lt: enddatum2AbsoluteZahl },
-                  enddatum: { $gt: startdatumAbsolutZahl },
-                  $where: `dateCompare('${startdatum}', '$startdatum') == 0 && dateCompare('${enddatum}', '$enddatum') == 0`
-              })
-              .toArray();
-          console.log({ message_resBo: reservierteBoote})
-  
-          const verfuegbareBoote = alleBoote.filter(boot =>
-              !reservierteBoote.some(reservierung => reservierung.welches_boot === boot._id)
-          );
-          
-          // anzahl der verfügbaren Boote
-          const anzahlVerfuegbareBoote = verfuegbareBoote.length;
-           console.log(anzahlVerfuegbareBoote);
-  
-          res.status(200).json(anzahlVerfuegbareBoote);
-      } catch (error) {
-          console.error(error);
-          res.status(500).json({ message: `Fehler beim Abrufen verfügbarer Boote: ${error}` });
-      }
-  };
-
-
-  export const getVerfuegbareBoote = async (req, res) => {
-    try {
-        const startdatum = await req.body.startdatum;
-        const enddatum = await req.body.enddatum;
-
-        // Konvertieren der Datumsangaben in absolute Zahlenwerte
-        const startdatumAbsolutZahl = toAbsoluteDate(startdatum);
-        const enddatum2AbsoluteZahl = toAbsoluteDate(enddatum);
-
-        console.log({ message_start: startdatumAbsolutZahl, message_end: enddatum2AbsoluteZahl });
-
-        const db = await getDb();
-
-        const alleBoote = await db.collection(BOOTE_COLLECTION).find().toArray();
-        
-        // Änderungen an reservierteBoote-Abfrage
-        const reservierteBoote1 = await db.collection(RESERVIERUNG_COLLECTION)
-            .find({
-                startdatum: { $eq: startdatum },
-                enddatum: { $eq: enddatum },
-            })
-            .toArray();
-        const reservierteBoote2 = await db.collection(RESERVIERUNG_COLLECTION)
-            .find({
-                startdatum: { $lt: enddatum2AbsoluteZahl },
-                enddatum: { $gt: startdatumAbsolutZahl },
-            })
-            .toArray();
-
-        const reservierteBoote = [...reservierteBoote1, ...reservierteBoote2];
-
-        console.log({ message_resBo: reservierteBoote });
-
-        const verfuegbareBoote = alleBoote.filter((boot) =>
-            !reservierteBoote.some((reservierung) => reservierung.welches_boot === boot._id)
-        );
-
-        // anzahl der verfügbaren Boote
-        const anzahlVerfuegbareBoote = verfuegbareBoote.length;
-        console.log(anzahlVerfuegbareBoote);
-
-        res.status(200).json(anzahlVerfuegbareBoote);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: `Fehler beim Abrufen verfügbarer Boote: ${error}` });
-    }
-};
