@@ -41,7 +41,7 @@ const upload = multer()
 // ! Bilder speichern auf dem Server     in die MongoDB geht nur der Pfad zum Speicherplatz auf dem Server
 // ! Damit die MongoDB nicht aufgebläht wird, die Bilder nicht doppelt gespeichert werden und die DB weiter gut scalierbar bleibt 
 const uploadBild = multer({
-  dest: 'uploadBild/',
+  dest: 'upload/',
   limits: {
     // fieldSize: 1024 * 1024 * 1,    // schneidet Bilder ab bei mehr als Datei 1 MB
     fileSize: 1024 * 1024 * 1,    //schneidet Bilder ab bei mehr als Datei 1 MB
@@ -56,7 +56,7 @@ const uploadBild = multer({
   }
 }
 )
-app.use('/uploadBild', express.static('./uploadBild'))
+app.use('/upload', express.static('./upload'))
 
 
 
