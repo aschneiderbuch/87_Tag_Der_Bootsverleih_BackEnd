@@ -23,6 +23,25 @@ export const postBoot = async (req, res) => {
     }
 }
 
+
+// editBooteById     ändern 268
+export const editBooteById = async (req, res) => {
+    try{
+        console.log(req.body)
+        const { id } = req.params
+        const boot = await db.collection(COL).updateOne( { _id: new ObjectId(id) } , { $set: { baujahr: req.body.baujahr, seriennummer: req.body.seriennummer, material: req.body.material, bootsart: req.boy.bootsart, bild: req.body.bild}})
+        clg(boot)
+        res.status(268).json({ message: `Boot mit ID ${id} wurde geändert: ${boot} ` })
+    } catch (err) {
+console.log(err)       
+res.status(568).json({ message: `Fehler bei editBooteById: ${err}`})
+    }
+}
+
+
+
+
+
 // ! Bild get fetch
 // id muss die _id vom Boot sein 
 export const getBooteBildById = async (req, res) => {

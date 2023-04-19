@@ -18,7 +18,9 @@ import {
 
 import {
   postBoot, getAlleBoote, getBooteById,
-  deleteBooteById, getAlleBooteObj, getBooteBildById, getBooteMitBildern, getVerfuegbareBoote
+  deleteBooteById, getAlleBooteObj, getBooteBildById, 
+  getBooteMitBildern, getVerfuegbareBoote,
+  editBooteById
 } from './controller/boote.js'
 
 import { getFetchFrontEndAufweckenInterval } from './controller/frontEnd.js'
@@ -125,6 +127,13 @@ app.get('/api/v1/boote/:id/bild', getBooteBildById)             // 240
 
 //  alleBoote mit Bildern      
 app.get('/api/v1/booteBilder', getBooteMitBildern)    //  246  = zahl
+
+// editboote mit Id verändern
+app.put('/api/v1/editBoote/:id', uploadBild.single('bild'), editBooteById)    //  268
+
+
+
+
 
 // zugriff geht nur vom FontEnd aus ;-(
 app.get('/api/v1/getFetchFrontEndAufweckenInterval', getFetchFrontEndAufweckenInterval)  //  247  = zahl
