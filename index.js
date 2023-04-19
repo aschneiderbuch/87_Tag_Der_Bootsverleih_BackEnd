@@ -11,7 +11,9 @@ import { v4 as uuidv4 } from 'uuid'
 import {
   postReservierung, getAlleReservierungen,
   getReservierungById, deleteReservierungById,
-  getAktuelleReservierungZeitraum, getAlleReservierungenObj, updateReservierung, createReservierungValid
+  getAktuelleReservierungZeitraum, getAlleReservierungenObj, 
+  updateReservierung, createReservierungValid, 
+  editReservierungById
 } from './controller/reservierung.js'
 
 import {
@@ -78,6 +80,10 @@ app.put('/api/v1/updateReservierung', upload.any(), updateReservierung)  //264 e
 // aktuelleReservierung     // multer upload    damit er Datum vom FrontEnd für die Suche in der DB bekommt
 // zwei Werte vom FrontEnd kommen: startdatum und enddatum   // Rückgabe alle Reservierungen(Objekte) im Zeitraum
 app.get('/api/v1/aktuelleReservierung', upload.any(), getAktuelleReservierungZeitraum)   //295  = Objekt   + DB filter Datum > als Heute
+
+// reservierung editieren verändern bei Id
+app.put('/api/v1/editReservierung/:id', upload.any(), editReservierungById )    //265 
+
 
 // create Schema Validierung für Reservierung
 // ! MongoDB Validierung nur 1x am Anfang ausführen    - da es createCollection() macht

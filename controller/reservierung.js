@@ -39,7 +39,24 @@ export const updateReservierung = async (req, res) => {
     }
 }
 
-
+// editReservierungById 
+export const editReservierungById = async (req, res) => {
+    try {
+        console.log(req.body)
+        const { id } = req.params  // ! dafür wird das ObjectID benötigt
+        const db = await getDb()
+        const reservierung = await db.collection(COL).updateOne( { _id: new ObjectId(id) }, { $set: { startdatum: req.body.startdatum, enddatum: req.body.enddatum, welches_boot: req.body.welches_boot}})
+        console.log(reservierung)
+        if (reservierung) {
+            res.status(265).json( { reservierung })
+        } else {
+            res.status(565).json( { message: `Reservierung ID ${id} nicht gefunden`})
+        }
+    } catch (err) {
+        console.log(err)
+        res.status(555).json( { message: `Fehler bei editReservierungById: ${err}`} )
+    }
+}
 
 
 // alleReservierungen      findet Zahl  
