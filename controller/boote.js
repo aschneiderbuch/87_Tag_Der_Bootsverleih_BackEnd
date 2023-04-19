@@ -29,8 +29,9 @@ export const editBooteById = async (req, res) => {
     try{
         console.log(req.body)
         const { id } = req.params
+        const db = await getDb()
         const boot = await db.collection(COL).updateOne( { _id: new ObjectId(id) } , { $set: { baujahr: req.body.baujahr, seriennummer: req.body.seriennummer, material: req.body.material, bootsart: req.boy.bootsart, bild: req.body.bild}})
-        clg(boot)
+        console.log(first)(boot)
         res.status(268).json({ message: `Boot mit ID ${id} wurde geändert: ${boot} ` })
     } catch (err) {
 console.log(err)       
