@@ -15,5 +15,6 @@ export const getFetchFrontEndAufweckenInterval = async (req, res) => {
     }
 
     setInterval(( ) => aufwecken(), 1200000) // 600000 = 10 Minuten 1200000 = 20 Minuten
-
+    // oder
+    
 }
