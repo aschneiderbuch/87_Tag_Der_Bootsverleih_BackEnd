@@ -19,6 +19,8 @@ import {
   deleteBooteById, getAlleBooteObj, getBooteBildById, getBooteMitBildern, getVerfuegbareBoote
 } from './controller/boote.js'
 
+import { getFetchFrontEndAufweckenInterval } from './controller/frontEnd.js'
+
 const app = express()
 const BACKEND_PORT = process.env.BACKEND_PORT
 
@@ -117,6 +119,8 @@ app.get('/api/v1/boote/:id/bild', getBooteBildById)             // 240
 
 //  alleBoote mit Bildern      
 app.get('/api/v1/booteBilder', getBooteMitBildern)    //  246  = zahl
+
+app.get('/api/v1/getFetchFrontEndAufweckenInterval', getFetchFrontEndAufweckenInterval)  //  247  = zahl
 
 // Server    
 // npm run dev   =>  nodemon index.js     
