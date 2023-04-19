@@ -120,7 +120,10 @@ app.get('/api/v1/boote/:id/bild', getBooteBildById)             // 240
 //  alleBoote mit Bildern      
 app.get('/api/v1/booteBilder', getBooteMitBildern)    //  246  = zahl
 
+// zugriff geht nur vom FontEnd aus ;-(
 app.get('/api/v1/getFetchFrontEndAufweckenInterval', getFetchFrontEndAufweckenInterval)  //  247  = zahl
+// 1x aufrufen damit er hier gleich gestartet wird
+getFetchFrontEndAufweckenInterval()
 
 // Server    
 // npm run dev   =>  nodemon index.js     
